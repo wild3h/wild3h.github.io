@@ -1,11 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>wild3h</title>
+    <!--引入本地xlsx.core.min.js-->
+    <script src="xlsx.core.min.js"></script>
+    <!--引入本地xlsx.full.min.js-->
+    <script src="xlsx.full.min.js"></script>
 </head>
+
 <body>
-    <h1>wild3h的个人主页</h1>
-    <h1>Hello ~</h1>
+    <!--创建一个选择本地文件的按钮，然后读取该文件，该文件是Excel，读取每一行数据-->
+    <input type="file" id="file" name="file" multiple="multiple" />
+    <div id="result"></div>
 </body>
+<script>
+    var wb;//读取完成的数据
+    var rABS = true; //是否将文件读取为二进制字符串
+
+    var file = document.getElementById('file');
+    var result = document.getElementById('result');
+    file.onchange = function () {
+        var files = this.files;
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var reader = new FileReader();
+            if (rABS) {
+                reader.readAsArrayBuffer(file);
+            } else {
+                reader.readAsBinaryString(file);
+            }
+            reader.onload = function (e) {
+                var data = e.target.result;
+                if (rABS) {
+                    wb = XLSX.read(btoa(fixdata(data)), {//手动转化
+                        type: 'base64'
+                    });
+                } else {
+                    wb = XLSX.read(data, {
+
+                        type: 'binary'//以二进制的方式读取
+                    });
+                }
+
+                console.log('wb: ', wb);
+                //wb.SheetNames[0]是获取Sheets中第一个Sheet的名字
+                //wb.Sheets[Sheet名]获取第一个Sheet的数据
+                // XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { raw: false }); //以字符串形式读取。
+                console.log('XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]): ', XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]));
+                document.getElementById("result").innerHTML = JSON.stringify(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]));
+            }
+        }
+    }
+
+    function fixdata(data) { //文件流转BinaryString
+        var o = "",
+            l = 0,
+            w = 10240;
+        for (; l < data.byteLength / w; ++l) o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w, l * w + w)));
+        o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w)));
+        return o;
+    }
+
+</script>
+
 </html>
