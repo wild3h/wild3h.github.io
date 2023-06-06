@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>wild3h</title>
+    <title>再写代码就退网</title>
     <!--引入本地xlsx.core.min.js-->
     <script src="xlsx.core.min.js"></script>
     <!--引入本地xlsx.full.min.js-->
@@ -16,6 +16,7 @@
     <div id="result"></div>
 </body>
 <script>
+    console.log('🤣👇🤣\n👉🤡👈\n🤣👆🤣');
     var wb;//读取完成的数据
     var rABS = true; //是否将文件读取为二进制字符串
 
@@ -49,7 +50,7 @@
                 //wb.Sheets[Sheet名]获取第一个Sheet的数据
                 // XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { raw: false }); //以字符串形式读取。
                 console.log('XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]): ', XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]));
-                document.getElementById("result").innerHTML = JSON.stringify(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]));
+                document.getElementById("result").innerHTML = "{\"list\":"+JSON.stringify(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]))+"}";
             }
         }
     }
