@@ -9,10 +9,25 @@
     <!--引入本地xlsx.full.min.js-->
     <script src="xlsx.full.min.js"></script>
 </head>
-
+<style>
+    #copy {
+        width: 100px;
+        height: 30px;
+        background-color: #ccc;
+        border: 1px solid #000;
+        border-radius: 5px;
+        text-align: center;
+        line-height: 30px;
+        cursor: pointer;
+    }
+</style>
 <body>
     <!--创建一个选择本地文件的按钮，然后读取该文件，该文件是Excel，读取每一行数据-->
     <input type="file" id="file" name="file" multiple="multiple" />
+    <!--一键粘贴-->
+    <div id="copy">
+        一键粘贴
+    </div>
     <div id="result"></div>
 </body>
 <script>
@@ -44,13 +59,12 @@
                         type: 'binary'//以二进制的方式读取
                     });
                 }
-
-                console.log('wb: ', wb);
-                //wb.SheetNames[0]是获取Sheets中第一个Sheet的名字
-                //wb.Sheets[Sheet名]获取第一个Sheet的数据
-                // XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { raw: false }); //以字符串形式读取。
-                console.log('XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]): ', XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]));
-                document.getElementById("result").innerHTML = "{\"list\":"+JSON.stringify(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]))+"}";
+                //console.log('XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]): ', XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]));
+                let text = "{\"list\":"+JSON.stringify(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]))+"}";
+                //json格式化
+                text = JSON.stringify(JSON.parse(text), null, 4).toString();
+                console.log('text: ', text);
+                document.getElementById("result").innerHTML = text;
             }
         }
     }
@@ -63,6 +77,25 @@
         o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w)));
         return o;
     }
+
+    //一键粘贴
+    document.getElementById('copy').onclick = function () {
+        let text = document.getElementById("result").innerHTML;
+        //复制到剪贴板
+        var input = document.createElement('textarea');
+        // 隐藏此输入框
+        input.style.position = 'absolute';
+        input.style.clip = 'rect(0 0 0 0)';
+        document.body.appendChild(input);
+        input.value = text;
+        input.focus();
+        input.select();
+        if (document.execCommand('copy')) {
+            document.execCommand('copy');
+            alert('复制成功');
+        }
+    }
+    
 
 </script>
 
