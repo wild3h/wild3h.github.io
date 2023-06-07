@@ -1,8 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <script src="https://unpkg.com/vue@next"></script>
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css">
+    <!-- import JavaScript -->
+    <script src="https://unpkg.com/element-plus"></script>
     <title>再写代码就退网</title>
     <!--引入本地xlsx.core.min.js-->
     <script src="xlsx.core.min.js"></script>
@@ -10,93 +15,114 @@
     <script src="xlsx.full.min.js"></script>
 </head>
 <style>
-    #copy {
-        width: 100px;
-        height: 30px;
-        background-color: #ccc;
-        border: 1px solid #000;
-        border-radius: 5px;
-        text-align: center;
-        line-height: 30px;
-        cursor: pointer;
+    .demo-tabs>.el-tabs__content {
+        padding: 32px;
+        color: #6b778c;
+        font-size: 32px;
+        font-weight: 600;
+    }
+
+    .el-tabs--right .el-tabs__content,
+    .el-tabs--left .el-tabs__content {
+        height: 100%;
     }
 </style>
+
 <body>
-    <!--创建一个选择本地文件的按钮，然后读取该文件，该文件是Excel，读取每一行数据-->
-    <input type="file" id="file" name="file" multiple="multiple" />
-    <!--一键粘贴-->
-    <div id="copy">
-        一键复制
+    <div id="app">
+        <el-tabs :tab-position="'left'" style="height: 100%" class="demo-tabs">
+            <el-tab-pane label="黑名单格式化">
+                <div>
+                    <!--创建一个选择本地文件的按钮，然后读取该文件，该文件是Excel，读取每一行数据-->
+                    <el-upload ref="upload" class="upload-demo" :limit="1" :on-change="handleExceed"
+                        :auto-upload="false">
+                        <el-button type="primary">选择文件</el-button>
+                    </el-upload>
+                    <el-button @click="copy()">一键复制</el-button>
+                    <div>
+                        <el-input id="result" style="width: 500px;height:700px;margin-top: 20px;" v-model="resultText"
+                            type="textarea" placeholder="解析结果" :autosize="{ minRows:4,maxRows:20}" />
+                    </div>
+
+                </div>
+            </el-tab-pane>
+            <!-- <el-tab-pane label="Config">
+                <el-button>Button</el-button>
+            </el-tab-pane> -->
+        </el-tabs>
     </div>
-    <div id="result"></div>
+
+    <script>
+        const App = {
+            data() {
+                return {
+                    resultText: "",
+                };
+
+            },
+            methods: {
+                copy: function () {
+                    let text = this.resultText;
+                    //复制到剪贴板
+                    var input = document.createElement('textarea');
+                    // 隐藏此输入框
+                    input.style.position = 'absolute';
+                    input.style.width = '1px';
+                    input.style.height = '1px';
+                    input.style.clip = 'rect(0 0 0 0)';
+                    document.body.appendChild(input);
+                    input.value = text;
+                    input.focus();
+                    input.select();
+                    if (document.execCommand('copy')) {
+                        document.execCommand('copy');
+                        alert('复制成功');
+                    }
+                },
+                handleExceed: function (files) {
+                    var wb;//读取完成的数据
+                    var rABS = true; //是否将文件读取为二进制字符串
+                    let file = files.raw;
+                    var reader = new FileReader();
+                    if (rABS) {
+                        reader.readAsArrayBuffer(file);
+                    } else {
+                        reader.readAsBinaryString(file);
+                    }
+                    var that = this;
+                    reader.onload = function (e) {
+                        var data = e.target.result;
+                        if (rABS) {
+                            var o = "",
+                                l = 0,
+                                w = 10240;
+                            for (; l < data.byteLength / w; ++l) o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w, l * w + w)));
+                            o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w)));
+                            wb = XLSX.read(btoa(o), {//手动转化
+                                type: 'base64'
+                            });
+                        } else {
+                            wb = XLSX.read(data, {
+                                type: 'binary'//以二进制的方式读取
+                            });
+                        }
+                        let text = "{\"list\":" + JSON.stringify(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]])) + "}";
+                        //json格式化
+                        text = JSON.stringify(JSON.parse(text), null, 4).toString();
+                        //console.log(text);
+                        that.resultText = text;
+                    }
+                },
+            }
+        };
+        const app = Vue.createApp(App);
+        app.use(ElementPlus);
+        app.mount("#app");
+        console.log('🤣👇🤣\n👉🤡👈\n🤣👆🤣');
+
+
+
+    </script>
 </body>
-<script>
-    console.log('🤣👇🤣\n👉🤡👈\n🤣👆🤣');
-    var wb;//读取完成的数据
-    var rABS = true; //是否将文件读取为二进制字符串
-
-    var file = document.getElementById('file');
-    var result = document.getElementById('result');
-    file.onchange = function () {
-        var files = this.files;
-        for (var i = 0; i < files.length; i++) {
-            var file = files[i];
-            var reader = new FileReader();
-            if (rABS) {
-                reader.readAsArrayBuffer(file);
-            } else {
-                reader.readAsBinaryString(file);
-            }
-            reader.onload = function (e) {
-                var data = e.target.result;
-                if (rABS) {
-                    wb = XLSX.read(btoa(fixdata(data)), {//手动转化
-                        type: 'base64'
-                    });
-                } else {
-                    wb = XLSX.read(data, {
-
-                        type: 'binary'//以二进制的方式读取
-                    });
-                }
-                //console.log('XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]): ', XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]));
-                let text = "{\"list\":"+JSON.stringify(XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]))+"}";
-                //json格式化
-                text = JSON.stringify(JSON.parse(text), null, 4).toString();
-                console.log('text: ', text);
-                document.getElementById("result").innerHTML = text;
-            }
-        }
-    }
-
-    function fixdata(data) { //文件流转BinaryString
-        var o = "",
-            l = 0,
-            w = 10240;
-        for (; l < data.byteLength / w; ++l) o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w, l * w + w)));
-        o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w)));
-        return o;
-    }
-
-    //一键粘贴
-    document.getElementById('copy').onclick = function () {
-        let text = document.getElementById("result").innerHTML;
-        //复制到剪贴板
-        var input = document.createElement('textarea');
-        // 隐藏此输入框
-        input.style.position = 'absolute';
-        input.style.clip = 'rect(0 0 0 0)';
-        document.body.appendChild(input);
-        input.value = text;
-        input.focus();
-        input.select();
-        if (document.execCommand('copy')) {
-            document.execCommand('copy');
-            alert('复制成功');
-        }
-    }
-    
-
-</script>
 
 </html>
