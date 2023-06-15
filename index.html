@@ -43,7 +43,7 @@
 <body>
     <div id="app">
         <el-tabs :tab-position="'left'" style="height: 100%" class="demo-tabs">
-            <el-tab-pane label="黑名单格式化">
+            <el-tab-pane label="黑名单/收藏格式化">
                 <div>
                     <!--创建一个选择本地文件的按钮，然后读取该文件，该文件是Excel，读取每一行数据-->
                     <el-upload ref="upload" class="upload-demo" :limit="1" :on-change="handleExceed"
@@ -52,7 +52,8 @@
                     </el-upload>
                     <div class="single-line">
                         <el-button @click="copy()">一键复制</el-button>
-                        <el-button type="primary" @click="download()">下载默认配置Excel</el-button>
+                        <el-button type="primary" @click="downloadBlackList()">下载黑名单默认配置Excel</el-button>
+                        <el-button type="primary" @click="downloadFavorite()">下载收藏默认配置Excel</el-button>
                     </div>
                     <div>
                         <el-input id="result" style="width: 500px;height:auto;margin-top: 20px;" v-model="resultText"
@@ -145,8 +146,11 @@
                         that.resultText = text;
                     }
                 },
-                download: function () {
-                    location.href = "./sample.xlsx";
+                downloadBlackList: function () {
+                    location.href = "./sampleBlackList.xlsx";
+                },
+                downloadFavorite: function () {
+                    location.href = "./sampleFavorite.xlsx";
                 }
             }
         };
