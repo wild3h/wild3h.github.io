@@ -46,20 +46,20 @@
             <el-tab-pane label="浏览器云端配置数据格式化">
                 <div>
                     <!--创建一个选择本地文件的按钮，然后读取该文件，该文件是Excel，读取每一行数据-->
-                    <el-upload ref="upload" class="upload-demo" :limit="1" :on-change="handleExceed"
-                        :auto-upload="false">
+                    <el-upload drag ref="upload" class="upload-demo" :limit="1" :on-change="handleExceed"
+                        :auto-upload="false" multiple="false">
                         <el-button type="primary">选择文件</el-button>
                     </el-upload>
                     <div class="single-line">
                         <el-button @click="copy()">一键复制</el-button>
                     </div>
                     <div class="single-line">
-                        <el-button type="primary" @click="downloadBlackList()">下载 黑名单 默认配置Excel</el-button>
-                        <el-button type="primary" @click="downloadFavorite()">下载 收藏 默认配置Excel</el-button>
+                        <el-button type="primary" @click="downloadBlackList()">黑名单 默认配置Excel</el-button>
+                        <el-button type="primary" @click="downloadFavorite()">收藏 默认配置Excel</el-button>
                     </div>
                     <div class="single-line">
-                        <el-button type="primary" @click="downloadPad()">下载 pad模式 默认配置Excel</el-button>
-                        <el-button type="primary" @click="downloadMultiTab()">下载 多标签 默认配置Excel</el-button>
+                        <el-button type="primary" @click="downloadPad()">pad模式 默认配置Excel</el-button>
+                        <el-button type="primary" @click="downloadMultiTab()">多标签 默认配置Excel</el-button>
                     </div>
                     <div>
                         <el-input id="result" style="width: 500px;height:auto;margin-top: 20px;" v-model="resultText"
