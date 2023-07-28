@@ -43,8 +43,8 @@
 <body>
     <div id="app">
         <el-tabs :tab-position="'left'" style="height: 100%" class="demo-tabs">
-            <el-tab-pane label="浏览器云端配置数据格式化">
-                <div>
+            <el-tab-pane label="浏览器云端配置数据格式化" >
+                <div style="overflow: scroll;height: 95%;">
                     <!--创建一个选择本地文件的按钮，然后读取该文件，该文件是Excel，读取每一行数据-->
                     <el-upload drag ref="upload" class="upload-demo" :limit="1" :on-change="handleExceed"
                         :auto-upload="false" multiple="false">
@@ -52,6 +52,7 @@
                     </el-upload>
                     <div class="single-line">
                         <el-button @click="copy()">一键复制</el-button>
+                        <el-text class="mx-1" size="large">&nbsp;&nbsp;&nbsp;Tips：收藏url配置完整域名，黑名单url仅配host</el-text>
                     </div>
                     <div class="single-line">
                         <el-button type="primary" @click="downloadBlackList()">黑名单 默认配置Excel</el-button>
