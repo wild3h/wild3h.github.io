@@ -86,9 +86,173 @@
                     </div>
                 </div>
             </el-tab-pane>
-            <!-- <el-tab-pane label="Config">
-                <el-button>Button</el-button>
-            </el-tab-pane> -->
+            <el-tab-pane label="文娱组件化壳工程相关">
+                <div style="overflow: scroll;height: 95%;">
+                    <div class="single-line">
+                        <el-text class="mx-1" size="large" style="width: 100%;">当前配置列表：</el-text>
+                    </div>
+                    <el-text class="mx-2" size="small">
+                        {
+                            "repos": [
+                                  {
+                                      "repoName": "音频",
+                                      "repo": "git@gitlab.chehejia.com:entertainment/chromium/librowser.git",
+                                      "repoFolder": "librowser",
+                                      "type": "music",
+                                      "module": [
+                                          {
+                                              "moduleName": "lib_base",
+                                              "isNecessary": true
+                                          },
+                                          {
+                                              "moduleName": "lib_protocol",
+                                              "isNecessary": true
+                                          },
+                                          {
+                                              "moduleName": "lib_data",
+                                              "isNecessary": true
+                                          },
+                                          {
+                                              "moduleName": "module_home",
+                                              "isNecessary": false
+                                          },
+                                          {
+                                              "moduleName": "module_history",
+                                              "isNecessary": false
+                                          },
+                                          {
+                                              "moduleName": "module_mine",
+                                              "isNecessary": false
+                                          },
+                                          {
+                                              "moduleName": "module_category",
+                                              "isNecessary": false
+                                          },
+                                          {
+                                              "moduleName": "module_detail",
+                                              "isNecessary": false
+                                          },
+                                          {
+                                              "moduleName": "module_player",
+                                              "isNecessary": false
+                                          },
+                                          {
+                                              "moduleName": "module_system",
+                                              "isNecessary": false
+                                          },
+                                          {
+                                              "moduleName": "module_voice",
+                                              "isNecessary": false
+                                          },
+                                          {
+                                              "moduleName": "module_settings",
+                                              "isNecessary": false
+                                          },
+                                          {
+                                              "moduleName": "module_mediabar",
+                                              "isNecessary": false
+                                          }
+                                      ],
+                                      "style": [
+                                          {
+                                              "pic": "style_music_1"
+                                          },
+                                          {
+                                              "pic": "style_music_2"
+                                          }
+                                      ]
+                                  },
+                                  {
+                                      "repoName": "视频",
+                                      "repo": "git@gitlab.chehejia.com:entertainment/chromium/librowser.git",
+                                      "repoFolder": "librowser",
+                                      "type": "video",
+                                      "module": [
+                                          {
+                                              "moduleName": "lib_base",
+                                              "isNecessary": true
+                                          },
+                                          {
+                                              "moduleName": "lib_protocol",
+                                              "isNecessary": true
+                                          },
+                                          {
+                                              "moduleName": "module_auth",
+                                              "isNecessary": false
+                                          },
+                                          {
+                                              "moduleName": "module_blacklist",
+                                              "isNecessary": false
+                                          },
+                                          {
+                                              "moduleName": "module_history",
+                                              "isNecessary": false
+                                          },
+                                          {
+                                              "moduleName": "module_media",
+                                              "isNecessary": false
+                                          },
+                                          {
+                                              "moduleName": "module_more",
+                                              "isNecessary": false
+                                          },
+                                          {
+                                              "moduleName": "module_qrcode",
+                                              "isNecessary": false
+                                          },
+                                          {
+                                              "moduleName": "module_safety",
+                                              "isNecessary": false
+                                          },
+                                          {
+                                              "moduleName": "module_voice",
+                                              "isNecessary": false
+                                          },
+                                          {
+                                              "moduleName": "module_webview",
+                                              "isNecessary": false
+                                          },
+                                          {
+                                              "moduleName": "module_favorite",
+                                              "isNecessary": false
+                                          }
+                                      ],
+                                      "style": [
+                                          {
+                                              "pic": "style_video_1"
+                                          },
+                                          {
+                                              "pic": "style_video_2"
+                                          }
+                                      ]
+                                  },
+                                  {
+                                      "repoName": "有声",
+                                      "repo": "www.baidu.com",
+                                      "repoFolder": "librowser",
+                                      "type": "sound",
+                                      "module": [
+                                          {
+                                              "moduleName": "lib_base",
+                                              "isNecessary": true
+                                          }
+                                      ],
+                                      "style": [
+                                          {
+                                              "pic": "style_sound_1"
+                                          },
+                                          {
+                                              "pic": "style_sound_2"
+                                          }
+                                      ]
+                                  }
+                              ]
+                          }
+                    </el-text>
+                    <iframe src="https://www.bejson.com/jsoneditoronline/" frameborder="0"
+                        style="width: 100%;height: 100%;"></iframe>
+                </div>
+            </el-tab-pane>
         </el-tabs>
     </div>
 
@@ -97,6 +261,7 @@
             data() {
                 return {
                     resultText: "",
+                    configText: ""
                 };
 
             },
